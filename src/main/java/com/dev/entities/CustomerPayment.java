@@ -1,0 +1,119 @@
+package com.dev.entities;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name="customer_payment_detail")
+
+public class CustomerPayment {
+
+	@Id
+	@GeneratedValue(generator="system-uuid")
+	@GenericGenerator(name="system-uuid", strategy = "uuid")
+	@Column(name="cust_pay_id")
+	private String custPaymentId;
+	
+	@Column(name="previous_balance")
+	private Double previousBalance;
+	
+	@Column(name="currant_month_balance")
+	private Double currentMonthBalance;
+	
+	@Column(name="payment_for_month")
+	private String paymentForMonth;
+	
+	@Column(name="net_total")
+	private Double netTotal;
+	
+	@Column(name="amount_paid")
+	private Double amountPaid;
+	
+	@Column(name="grand_total")
+	private Double grandTotal;
+	
+	@ManyToOne
+    @JoinColumn(name = "custNumber")
+    private Customer customer;
+
+	public String getCustPaymentId() {
+		return custPaymentId;
+	}
+
+	public void setCustPaymentId(String custPaymentId) {
+		this.custPaymentId = custPaymentId;
+	}
+
+	public Double getPreviousBalance() {
+		return previousBalance;
+	}
+
+	public void setPreviousBalance(Double previousBalance) {
+		this.previousBalance = previousBalance;
+	}
+
+	public Double getCurrentMonthBalance() {
+		return currentMonthBalance;
+	}
+
+	public void setCurrentMonthBalance(Double currentMonthBalance) {
+		this.currentMonthBalance = currentMonthBalance;
+	}
+
+	public String getPaymentForMonth() {
+		return paymentForMonth;
+	}
+
+	public void setPaymentForMonth(String paymentForMonth) {
+		this.paymentForMonth = paymentForMonth;
+	}
+
+	public Double getNetTotal() {
+		return netTotal;
+	}
+
+	public void setNetTotal(Double netTotal) {
+		this.netTotal = netTotal;
+	}
+
+	public Double getAmountPaid() {
+		return amountPaid;
+	}
+
+	public void setAmountPaid(Double amountPaid) {
+		this.amountPaid = amountPaid;
+	}
+
+	public Double getGrandTotal() {
+		return grandTotal;
+	}
+
+	public void setGrandTotal(Double grandTotal) {
+		this.grandTotal = grandTotal;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+	
+
+	
+	
+	
+}
