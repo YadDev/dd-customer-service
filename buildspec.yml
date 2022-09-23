@@ -1,0 +1,12 @@
+phases:
+  build:
+    commands:
+      - echo Entered the clean and build phase...
+      - gradle clean
+      - gradle build
+  post_build:
+    commands:
+      - echo Build completed successfully
+artifacts:
+  files:
+    - build/libs/devansh-customer-service-0.0.1-SNAPSHOT.jar
