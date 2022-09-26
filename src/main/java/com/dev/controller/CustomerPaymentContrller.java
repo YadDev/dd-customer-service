@@ -51,7 +51,7 @@ public class CustomerPaymentContrller {
 		LOGGER.info("In Get Customer Payment Controller");
 		Collection<CustomerPayment> custPayament = null;
 		if(where.isEmpty()) {
-			custPayament =  custPaymentService.getCustomerPaymentDetail(custNumber);
+			custPayament = custPaymentService.getCustomerPaymentDetail(custNumber);
 		}
 		else {
 			LOGGER.info("where query param is missing");
