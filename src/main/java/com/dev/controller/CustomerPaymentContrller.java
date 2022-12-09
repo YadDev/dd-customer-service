@@ -104,19 +104,19 @@ public class CustomerPaymentContrller {
 		 Sheet sheet = null;
 			sheet = workbook.getSheet("Sheet1");
 		    for(int i=0;i<sheet.getPhysicalNumberOfRows() ;i++) {
-		    	CustomerPayment tempStudent = new CustomerPayment();
+		    	CustomerPayment custPayment = new CustomerPayment();
 		            
 		        Row row = sheet.getRow(i);
 		        Customer cust = new Customer();
 		        cust.setCustNumber(""+row.getCell(0).getStringCellValue());
-		        tempStudent.setCustomer(cust);
-		        tempStudent.setPreviousBalance(Double.valueOf(row.getCell(1).getNumericCellValue()));
-		        tempStudent.setCurrentMonthBalance(Double.valueOf(row.getCell(2).getNumericCellValue()));
-		        tempStudent.setPaymentForMonth(""+row.getCell(3).getStringCellValue());
-		        tempStudent.setNetTotal(tempStudent.getCurrentMonthBalance()+tempStudent.getPreviousBalance());
-		        tempStudent.setAmountPaid(Double.valueOf(row.getCell(4).getNumericCellValue()));
-		        tempStudent.setGrandTotal(tempStudent.getNetTotal()-tempStudent.getAmountPaid());
-		        listOfCustomer.add(tempStudent);   
+		        custPayment.setCustomer(cust);
+		        custPayment.setPreviousBalance(Double.valueOf(row.getCell(1).getNumericCellValue()));
+		        custPayment.setCurrentMonthBalance(Double.valueOf(row.getCell(2).getNumericCellValue()));
+		        custPayment.setPaymentForMonth(""+row.getCell(3).getStringCellValue());
+		        custPayment.setNetTotal(custPayment.getCurrentMonthBalance()+custPayment.getPreviousBalance());
+		        custPayment.setAmountPaid(Double.valueOf(row.getCell(4).getNumericCellValue()));
+		        custPayment.setGrandTotal(custPayment.getNetTotal()-custPayment.getAmountPaid());
+		        listOfCustomer.add(custPayment);   
 		    }
 		    
 		    System.out.println("Excel sheet read Successful "+listOfCustomer);
