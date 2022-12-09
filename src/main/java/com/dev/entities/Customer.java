@@ -35,7 +35,7 @@ public class Customer {
 	private Boolean customerStatus;
 
 	@Column(name="custAddress")
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinTable(name = "customer_addresses",
 			joinColumns = @JoinColumn(name = "customer_id"),
 			inverseJoinColumns = @JoinColumn(name = "address_id")
@@ -43,8 +43,9 @@ public class Customer {
 	private Set<Address> customerAddres;
 	
 	
+	
 
-	@Column(name="createdAt",columnDefinition = "text default to_char(now(),'"+ CommonConstants.TIME_FORMAT +"')")
+	@Column(name="createdAt",columnDefinition = "text default to_char(now(),'"+ CommonConstants.DATE_TIME_FORMAT +"')")
 	private String createdAt;
 
 	public String getCustNumber() {

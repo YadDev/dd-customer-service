@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.dev.entities.CustomerPayment;
-import com.dev.entities.PaymentUpdateRequest;
 import com.dev.exception.DevanshException;
+import com.dev.model.PaymentUpdateRequest;
 
 @Service
 public interface CustomerPaymentService {

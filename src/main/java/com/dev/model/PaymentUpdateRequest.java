@@ -1,10 +1,4 @@
-package com.dev.entities;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+package com.dev.model;
 
 public class PaymentUpdateRequest {
 

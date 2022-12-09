@@ -84,7 +84,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 				//System.out.println("Entered Password "+enteredPassword+"\t DB Password "+dbUser.getPassword());
 				if(encoder.matches(user.getPassword(),dbUser.getPassword())){
-					DateTimeFormatter dtf = DateTimeFormatter.ofPattern(CommonConstants.TIME_FORMAT);
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern(CommonConstants.DATE_TIME_FORMAT);
 					LocalDateTime localTime = LocalDateTime.now();
 					String loginTime 	= dtf.format(localTime);
 					token = jwtUtil.generateToken(dbUser);

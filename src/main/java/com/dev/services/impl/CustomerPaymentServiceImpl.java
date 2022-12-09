@@ -10,8 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dev.entities.CustomerPayment;
-import com.dev.entities.PaymentUpdateRequest;
 import com.dev.exception.DevanshException;
+import com.dev.model.PaymentUpdateRequest;
 import com.dev.repository.CustomerPaymentRepository;
 import com.dev.services.CustomerPaymentService;
 
@@ -38,9 +38,14 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
 
 	@Override
 	public Collection<CustomerPayment> getCustomerPaymentDetail(String id) {
-		Collection<CustomerPayment> cust = custPayRepo.findPaymentByCustomerId(id);
-		CustomerPayment  customer = getCustomerPaymentDetailWithQuery(id,"Jun-2022");
-		System.out.println("In Customer Payment Service Impl: getCustomerPay	mentDetail"+customer.getCustPaymentId());
+		cust = custPayRepo.findPaymentByCustomerId(id);
+		System.out.println("In Customer Payment Service Impl: getCustomerPaymentDetail"+cust.size());
+		CustomerPayment  customer = getCustomerPaymentDetailWithQuery(id,"Oct-2022");
+		System.out.println("In Customer Payment Service Impl: getCustomerPaymentDetail"+customer.getCustPaymentId());
+		if(!cust.isEmpty()) {
+			cust.clear();
+		}
+		cust.add(customer);
 		return cust;
 	}
 
@@ -51,8 +56,10 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
 		if(existingPayDetail.isPresent()) {
 			CustomerPayment retriveCustPayDetail = existingPayDetail.get();
 			Double grandTotal = retriveCustPayDetail.getNetTotal() - payUpdateReq.getAmountPaid();
+			retriveCustPayDetail.setStatus(payUpdateReq.getAmountPaid()>=retriveCustPayDetail.getNetTotal()?"Paid":"Pending");
 			retriveCustPayDetail.setGrandTotal(grandTotal);
-			custPayRepo.updatePaymentByPaymentRefId(payUpdateReq.getCustPayRef(), payUpdateReq.getAmountPaid(), grandTotal);
+			retriveCustPayDetail.setAmountPaid(payUpdateReq.getAmountPaid());
+			custPayRepo.save(retriveCustPayDetail);
 			return retriveCustPayDetail;
 		}
 		else {
@@ -67,6 +74,7 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
 		CustomerPayment customer = null;		
 		customerPayment.setNetTotal(customerPayment.getPreviousBalance()+customerPayment.getCurrentMonthBalance());
 		System.out.println("In Customer Payment Service Impl: createCustomerPayment");
+		customerPayment.setStatus("Pending");
 		customer = custPayRepo.save(customerPayment);
 		return customer;
 	}

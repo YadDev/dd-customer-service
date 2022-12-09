@@ -5,7 +5,7 @@ import com.dev.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api")
 public class CustomerController {
@@ -35,5 +35,5 @@ public class CustomerController {
 	public ResponseEntity<?> deleteCustomer(@PathVariable String id){
 		return ResponseEntity.ok(customerService.removeCustomer(id));
 	}
-
+	
 }

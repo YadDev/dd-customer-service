@@ -2,6 +2,7 @@ package com.dev.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -10,14 +11,12 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name="customer_payment_detail")
-
+@JsonSerialize
 public class CustomerPayment {
 
 	@Id
@@ -28,7 +27,7 @@ public class CustomerPayment {
 	
 	@Column(name="previous_balance")
 	private Double previousBalance;
-	
+		
 	@Column(name="currant_month_balance")
 	private Double currentMonthBalance;
 	
@@ -44,7 +43,11 @@ public class CustomerPayment {
 	@Column(name="grand_total")
 	private Double grandTotal;
 	
-	@ManyToOne
+	@Column(name="status",columnDefinition = "varchar(25) default 'Pending'")
+	private String status;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "custNumber")
     private Customer customer;
 
@@ -110,6 +113,14 @@ public class CustomerPayment {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 

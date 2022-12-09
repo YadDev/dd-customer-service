@@ -11,5 +11,6 @@ public class CommonConstants {
     public static final String  AUTHORIZATION_HEADER = "Authorization";
     public static final String  AUTHORIZATION_BEARER = "Bearer ";
 
-    public static final String TIME_FORMAT = "DD-MM-YYYY HH:mm:SS";
+    public static final String DATE_TIME_FORMAT = "DD-MM-YYYY HH:mm:SS";
+    public static final String DATE_FORMAT = "DD-MM-YYYY";
 }

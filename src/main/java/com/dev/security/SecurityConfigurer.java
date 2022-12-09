@@ -65,6 +65,7 @@ public class SecurityConfigurer {
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(AllowedOriginPatterns));
+        configuration.setAllowedOriginPatterns(Arrays.asList(AllowedOriginPatterns));
         configuration.setAllowedMethods(Arrays.asList(AllowedMethods));
         configuration.setMaxAge(10L);
         configuration.setAllowCredentials(true);

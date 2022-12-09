@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,10 +27,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.dev.entities.Customer;
 import com.dev.entities.CustomerPayment;
-import com.dev.entities.PaymentUpdateRequest;
 import com.dev.exception.DevanshException;
+import com.dev.model.PaymentUpdateRequest;
 import com.dev.services.CustomerPaymentService;
-
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api")
 public class CustomerPaymentContrller {
@@ -46,18 +47,21 @@ public class CustomerPaymentContrller {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	@GetMapping("/payments/{custNumber}")
 	public ResponseEntity<Object> getCustomerPayDetail(@PathVariable String custNumber, @RequestParam Optional<String> where){
 		LOGGER.info("In Get Customer Payment Controller");
-		Collection<CustomerPayment> custPayament = null;
+		Collection<CustomerPayment> custPayament = new ArrayList<>();
+		CustomerPayment custPay = null;
 		if(where.isEmpty()) {
 			custPayament = custPaymentService.getCustomerPaymentDetail(custNumber);
 		}
 		else {
 			LOGGER.info("where query param is missing");
-			String finalQuery = "where custNumber='"+ custNumber +"' and "+where.get();
-			custPayament =  (Collection<CustomerPayment>) custPaymentService.getCustomerPaymentDetailWithQuery(finalQuery, null);
+			custPay =  custPaymentService.getCustomerPaymentDetailWithQuery(custNumber, where.get());
+			custPayament.add(custPay);
 		}
+		
 		return ResponseEntity.ok(custPayament);
 		
 	}
@@ -98,15 +102,20 @@ public class CustomerPaymentContrller {
 	List<CustomerPayment> excelReader(Workbook workbook){
 		List<CustomerPayment> listOfCustomer = new ArrayList<>();
 		 Sheet sheet = null;
-			sheet = workbook.getSheet("Task Activity");
-		    for(int i=1;i<sheet.getPhysicalNumberOfRows() ;i++) {
+			sheet = workbook.getSheet("Sheet1");
+		    for(int i=0;i<sheet.getPhysicalNumberOfRows() ;i++) {
 		    	CustomerPayment tempStudent = new CustomerPayment();
 		            
 		        Row row = sheet.getRow(i);
 		        Customer cust = new Customer();
-		        cust.setCustNumber(row.getCell(0).getStringCellValue());
+		        cust.setCustNumber(""+row.getCell(0).getStringCellValue());
 		        tempStudent.setCustomer(cust);
-		        tempStudent.setPaymentForMonth(row.getCell(1).getStringCellValue());
+		        tempStudent.setPreviousBalance(Double.valueOf(row.getCell(1).getNumericCellValue()));
+		        tempStudent.setCurrentMonthBalance(Double.valueOf(row.getCell(2).getNumericCellValue()));
+		        tempStudent.setPaymentForMonth(""+row.getCell(3).getStringCellValue());
+		        tempStudent.setNetTotal(tempStudent.getCurrentMonthBalance()+tempStudent.getPreviousBalance());
+		        tempStudent.setAmountPaid(Double.valueOf(row.getCell(4).getNumericCellValue()));
+		        tempStudent.setGrandTotal(tempStudent.getNetTotal()-tempStudent.getAmountPaid());
 		        listOfCustomer.add(tempStudent);   
 		    }
 		    
